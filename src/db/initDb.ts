@@ -4,7 +4,7 @@ async function main() {
   await query(
     `CREATE TABLE users (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      name TEXT NOT NULL,
+      name TEXT NOT NULL UNIQUE,
       email TEXT NOT NULL,
       password TEXT NOT NULL,
       access_level INTEGER NOT NULL
