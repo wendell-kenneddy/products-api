@@ -6,7 +6,7 @@
   "author": "Wendell Kenneddy",
   "keywords": [],
   "scripts": {
-    "dev": "NODE_ENV=development nodemon",
+    "dev": "NODE_ENV=development dotenvx run -- nodemon",
     "start:db": "dotenvx run -- ts-node src/db/initDb.ts"
   },
   "description": "",
