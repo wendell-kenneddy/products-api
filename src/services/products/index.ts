@@ -1,4 +1,5 @@
 import { ObjectSchema, number, object, string } from "yup";
+import { CategoryWithID, NormalizedCategory } from "../categories";
 
 export interface Product {
   productName: string;
@@ -20,6 +21,10 @@ export interface NormalizedProduct {
   product_price: number;
   product_stock: number;
 }
+
+export type ProductWithCategory = ProductWithID & CategoryWithID;
+
+export type NormalizedProductWithCategory = NormalizedProduct & NormalizedCategory;
 
 export const productSchema: ObjectSchema<Product> = object({
   productName: string().required("Product name required."),
