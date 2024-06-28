@@ -18,6 +18,9 @@ router.get("/categories/:id", categoriesController.getOne);
 router.post("/categories", categoriesController.create);
 router.delete("/categories/:id", categoriesController.deleteOne);
 
+router.get("/products", productsController.getMany);
+router.get("/products/:id", productsController.getOne);
 router.post("/products", productsController.create);
+router.delete("/products/:id", productsController.deleteOne);
 
 export { router };
