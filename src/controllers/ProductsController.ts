@@ -4,6 +4,7 @@ import { GetOneProductService } from "../services/products/GetOneProductService"
 import { queryPageSchema } from "../utils/queryPageSchema";
 import { GetManyProductsService } from "../services/products/GetManyProductsService";
 import { DeleteOneProductService } from "../services/products/DeleteOneProductService";
+import { UpdateProductService } from "../services/products/UpdateProductService";
 
 export class ProductsController {
   create = async (req: Request, res: Response) => {
@@ -25,6 +26,13 @@ export class ProductsController {
     const condition = `LIMIT ${queryPage.pageSize} OFFSET ${queryPage.offset}`;
     const page = await new GetManyProductsService().execute(condition, categoryID);
     return res.status(200).json({ data: page });
+  };
+
+  updateOne = async (req: Request, res: Response) => {
+    const productID = req.params.productID;
+    const data = req.body;
+    await new UpdateProductService().execute({ productID, ...data });
+    res.json({ message: "Product successfully updated." });
   };
 
   deleteOne = async (req: Request, res: Response) => {
