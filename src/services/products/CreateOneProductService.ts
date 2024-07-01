@@ -5,7 +5,7 @@ import { InferType, array, object, string } from "yup";
 
 const requestDataSchema = object({
   productData: productSchema,
-  categories: array().of(string().required("ID required.").uuid("Invalid ID.")),
+  categoryIDs: array().of(string().required("ID required.").uuid("Invalid ID.")),
 });
 
 export class CreateOneProductService {
@@ -13,9 +13,9 @@ export class CreateOneProductService {
     await requestDataSchema.validate(data);
     let productID = "";
 
-    if (data.categories && data.categories.length) {
-      await uuidArraySchema.validate(data.categories);
-      productID = await this.insertWithCategories(data.productData, data.categories);
+    if (data.categoryIDs && data.categoryIDs.length) {
+      await uuidArraySchema.validate(data.categoryIDs);
+      productID = await this.insertWithCategories(data.productData, data.categoryIDs);
     } else {
       productID = await this.insertWithoutCategories(data.productData);
     }
@@ -23,8 +23,8 @@ export class CreateOneProductService {
     return productID;
   }
 
-  private async insertWithCategories(productData: Product, categories: string[]): Promise<string> {
-    const productCategories = this.generateProductCategories(categories);
+  private async insertWithCategories(productData: Product, categoryIDs: string[]): Promise<string> {
+    const productCategories = this.generateProductCategories(categoryIDs);
     const result = await query(
       `WITH product_insert AS (
         INSERT INTO products (
@@ -67,8 +67,8 @@ export class CreateOneProductService {
     return result.rows[0] as string;
   }
 
-  private generateProductCategories(categories: string[]) {
-    const insertArray = categories.map((c) => `((SELECT product_id FROM product_insert), '${c}')`);
+  private generateProductCategories(categoryIDs: string[]) {
+    const insertArray = categoryIDs.map((c) => `((SELECT product_id FROM product_insert), '${c}')`);
     return insertArray.join(",");
   }
 }
