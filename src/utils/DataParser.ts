@@ -1,5 +1,10 @@
 import { CategoryWithID, NormalizedCategory } from "../services/categories";
-import { NormalizedProductWithIDAndQuantity, ProductWithIDAndQuantity } from "../services/orders";
+import {
+  FullOrderProduct,
+  NormalizedFullOrderProduct,
+  NormalizedOrder,
+  OrderWithID,
+} from "../services/orders";
 import {
   NormalizedProduct,
   NormalizedProductWithCategory,
@@ -63,23 +68,27 @@ export class DataParser {
     };
   }
 
-  parseNormalizedProductWithIDAndQuantity({
+  parseNormalizedOrder({ order_id, customer_id }: NormalizedOrder): OrderWithID {
+    return { orderID: order_id, customerID: customer_id };
+  }
+
+  parseNormalizedFullOrderProduct({
+    order_product_id,
     product_id,
     product_name,
     product_description,
     product_image_url,
     product_price,
     product_stock,
-    quantity,
-  }: NormalizedProductWithIDAndQuantity): ProductWithIDAndQuantity {
+  }: NormalizedFullOrderProduct): FullOrderProduct {
     return {
+      orderProductID: order_product_id,
       productID: product_id,
       productName: product_name,
       productDescription: product_description,
       productImageUrl: product_image_url,
       productPrice: product_price,
       productStock: product_stock,
-      quantity,
     };
   }
 }
