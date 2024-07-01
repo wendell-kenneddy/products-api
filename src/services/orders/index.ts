@@ -1,4 +1,4 @@
-import { ObjectSchema, number, object, string } from "yup";
+import { ObjectSchema, object, string } from "yup";
 import { NormalizedProduct, ProductWithID } from "../products";
 
 export interface OrderWithID {
@@ -13,28 +13,25 @@ export interface NormalizedOrder {
 
 export interface OrderProduct {
   productID: string;
-  quantity: number;
 }
 
 export interface NormalizedOrderProduct {
   order_id: string;
   product_id: string;
-  quantity: number;
 }
 
 export interface OrderProductWithID extends OrderProduct {
   orderID: string;
 }
 
-export interface NormalizedProductWithIDAndQuantity extends NormalizedProduct {
-  quantity: number;
+export interface NormalizedFullOrderProduct extends NormalizedProduct {
+  order_product_id: string;
 }
 
-export interface ProductWithIDAndQuantity extends ProductWithID {
-  quantity: number;
+export interface FullOrderProduct extends ProductWithID {
+  orderProductID: string;
 }
 
 export const orderProductSchema: ObjectSchema<OrderProduct> = object({
   productID: string().required("Product ID required.").uuid("Invalid product ID."),
-  quantity: number().required("Product quantity required.").min(1),
 });
