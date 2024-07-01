@@ -4,6 +4,7 @@ import { DeleteOneCategoryService } from "../services/categories/DeleteOneCatego
 import { GetOneCategoryService } from "../services/categories/GetOneCategoryService";
 import { queryPageSchema } from "../utils/queryPageSchema";
 import { GetManyCategoriesService } from "../services/categories/GetManyCategoriesService";
+import { CreateProductCategoryService } from "../services/categories/AddCategoryToProductService";
 
 export class CategoriesController {
   create = async (req: Request, res: Response) => {
@@ -34,5 +35,11 @@ export class CategoriesController {
     return res.status(200).json({
       message: "Category successfully deleted.",
     });
+  };
+
+  addCategoryToExistingProduct = async (req: Request, res: Response) => {
+    const { productID, categoryID } = req.body;
+    await new CreateProductCategoryService().execute(productID, categoryID);
+    return res.json({ message: "Category successfully added to product." });
   };
 }
