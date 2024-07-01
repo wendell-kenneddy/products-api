@@ -7,12 +7,14 @@ export class CreateUserService {
     await userSchema.validate(data);
     const encryptedPassword = await this.encryptPassword(data.userPassword);
     const result = await query(
-      `INSERT INTO users (user_name, user_password, user_email, user_access_level) VALUES (
-        $1,
-        $2,
-        $3,
-        $4
-      ) RETURNING *`,
+      `WITH user_insert AS (
+        INSERT INTO users (user_name, user_password, user_email, user_access_level)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+      ), order_insert AS (
+        INSERT INTO orders (customer_id)
+        VALUES ((SELECT user_id FROM user_insert))
+      ) SELECT * FROM user_insert`,
       [data.userName, encryptedPassword, data.userEmail, data.userAccessLevel]
     );
     const normalizedUser = result.rows[0] as NormalizedUser;
