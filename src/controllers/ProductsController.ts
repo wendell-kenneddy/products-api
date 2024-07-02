@@ -5,17 +5,20 @@ import { queryPageSchema } from "../utils/queryPageSchema";
 import { GetManyProductsService } from "../services/products/GetManyProductsService";
 import { DeleteOneProductService } from "../services/products/DeleteOneProductService";
 import { UpdateProductService } from "../services/products/UpdateProductService";
+import { JwtPayload } from "jsonwebtoken";
 
 export class ProductsController {
   create = async (req: Request, res: Response) => {
+    const payload: JwtPayload = (req as any).jwtPayload;
+    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
     const data = req.body;
     const productID = await new CreateOneProductService().execute(data);
-    return res.status(200).json({ data: productID });
+    return res.status(200).json({ productID });
   };
 
   getOne = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const data = await new GetOneProductService().execute(id);
+    const productID = req.params.productID;
+    const data = await new GetOneProductService().execute(productID);
     return res.status(200).json({ data });
   };
 
@@ -31,6 +34,8 @@ export class ProductsController {
   };
 
   updateOne = async (req: Request, res: Response) => {
+    const payload: JwtPayload = (req as any).jwtPayload;
+    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
     const productID = req.params.productID;
     const data = req.body;
     await new UpdateProductService().execute({ productID, ...data });
@@ -38,8 +43,10 @@ export class ProductsController {
   };
 
   deleteOne = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    await new DeleteOneProductService().execute(id);
+    const payload: JwtPayload = (req as any).jwtPayload;
+    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
+    const productID = req.params.productID;
+    await new DeleteOneProductService().execute(productID);
     return res.status(200).json({ message: "Product successfully deleted." });
   };
 }
