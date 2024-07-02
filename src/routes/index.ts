@@ -19,6 +19,10 @@ router.get("/categories", categoriesController.getMany);
 router.get("/categories/:id", categoriesController.getOne);
 router.post("/categories", categoriesController.create);
 router.post("/categories/add-to-product", categoriesController.addCategoryToExistingProduct);
+router.delete(
+  "/categories/delete-from-product",
+  categoriesController.deleteCategoryFromExistingProduct
+);
 router.delete("/categories/:id", categoriesController.deleteOne);
 
 router.get("/products", productsController.getMany);
