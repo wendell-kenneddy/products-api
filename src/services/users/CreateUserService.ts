@@ -1,9 +1,9 @@
-import { NormalizedUser, UserWithID, userSchema } from ".";
+import { NormalizedUser, User, UserWithID, userSchema } from ".";
 import { query } from "../../db";
 import { hash } from "bcrypt";
 
 export class CreateUserService {
-  async execute(data: any): Promise<UserWithID> {
+  async execute(data: User): Promise<UserWithID> {
     await userSchema.validate(data);
     const encryptedPassword = await this.encryptPassword(data.userPassword);
     const result = await query(
