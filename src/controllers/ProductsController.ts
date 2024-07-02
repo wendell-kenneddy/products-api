@@ -20,10 +20,12 @@ export class ProductsController {
   };
 
   getMany = async (req: Request, res: Response) => {
-    const categoryID = req.body.categoryID || null;
-    const queryPage = req.body.queryPage;
+    const { categoryID, queryPage, inStock } = req.body;
     await queryPageSchema.validate(queryPage);
-    const condition = `LIMIT ${queryPage.pageSize} OFFSET ${queryPage.offset}`;
+    let condition = `LIMIT ${queryPage.pageSize} OFFSET ${queryPage.offset}`;
+
+    if (inStock) condition = "WHERE product_stock > 0 " + condition;
+
     const page = await new GetManyProductsService().execute(condition, categoryID);
     return res.status(200).json({ data: page });
   };
