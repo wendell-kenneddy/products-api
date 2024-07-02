@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CreateOrderProductService } from "../services/orders/CreateOrderProductService";
 import { GetOrderProductsService } from "../services/orders/GetOrderProductsService";
 import { DeleteOrderProductService } from "../services/orders/DeleteOrderProductService";
+import { OrderCheckoutService } from "../services/orders/OrderCheckoutService";
 
 export class OrdersController {
   createOrderProduct = async (req: Request, res: Response) => {
@@ -23,5 +24,11 @@ export class OrdersController {
     const orderProductID = req.body.orderProductID;
     await new DeleteOrderProductService().execute(orderProductID);
     res.status(200).json({ message: "Product successfully deleted from order." });
+  };
+
+  checkout = async (req: Request, res: Response) => {
+    const customerID = req.params.customerID;
+    await new OrderCheckoutService().execute(customerID);
+    res.status(200).json({ message: "Order sucessfully completed." });
   };
 }
