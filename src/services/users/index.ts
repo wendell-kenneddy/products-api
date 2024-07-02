@@ -21,6 +21,11 @@ export interface NormalizedUser {
   user_access_level: AccessLevel;
 }
 
+export interface LoginData {
+  userPassword: string;
+  userEmail: string;
+}
+
 export const userSchema: ObjectSchema<User> = object({
   userName: string().required("Name required."),
   userPassword: string()
@@ -28,4 +33,11 @@ export const userSchema: ObjectSchema<User> = object({
     .min(8, "Password must be at least 8 characters long."),
   userEmail: string().required("E-mail required.").email("Invalid e-mail."),
   userAccessLevel: number<AccessLevel>().required("Invalid access level."),
+});
+
+export const userLoginSchema: ObjectSchema<LoginData> = object({
+  userPassword: string()
+    .required("Password required.")
+    .min(8, "Password must be at least 8 characters long."),
+  userEmail: string().required("E-mail required.").email("Invalid e-mail."),
 });
