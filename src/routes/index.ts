@@ -33,6 +33,7 @@ router.delete("/products/:id", productsController.deleteOne);
 
 router.get("/orders/:customerID", ordersController.getOrderProducts);
 router.post("/orders/:customerID", ordersController.createOrderProduct);
+router.post("/orders/:customerID/checkout", ordersController.checkout);
 router.delete("/orders/delete-order-product", ordersController.deleteOrderProduct);
 
 export { router };
