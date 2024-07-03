@@ -1,17 +1,23 @@
 import { sign } from "jsonwebtoken";
-import { UserWithID } from "../services/users";
 
-export interface JWTPayload {
-  subject: string;
+export interface TokenPayload {
+  userID: string;
   userName: string;
   userAccessLevel: number;
 }
 
 export class JWTHandler {
-  static generateAccessToken({ userID, userAccessLevel, userName }: UserWithID): string {
-    return sign({ name: userName, userAccessLevel }, String(process.env.TOKEN_SECRET), {
-      subject: userID,
-      expiresIn: "12h",
+  static generateAccessToken(payload: TokenPayload): string {
+    return sign(payload, String(process.env.TOKEN_SECRET), {
+      subject: "user-token",
+      expiresIn: 60 * 15,
+    });
+  }
+
+  static generateRefreshToken(payload: TokenPayload) {
+    return sign(payload, String(process.env.REFRESH_TOKEN_SECRET), {
+      subject: "refresh-token",
+      expiresIn: "1d",
     });
   }
 }
