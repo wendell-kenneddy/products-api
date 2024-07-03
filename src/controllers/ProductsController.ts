@@ -5,12 +5,11 @@ import { queryPageSchema } from "../utils/queryPageSchema";
 import { GetManyProductsService } from "../services/products/GetManyProductsService";
 import { DeleteOneProductService } from "../services/products/DeleteOneProductService";
 import { UpdateProductService } from "../services/products/UpdateProductService";
-import { JwtPayload } from "jsonwebtoken";
+import { validateAccessLevel } from "../utils/validateAccessLevel";
 
 export class ProductsController {
   create = async (req: Request, res: Response) => {
-    const payload: JwtPayload = (req as any).jwtPayload;
-    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
+    validateAccessLevel(2, req);
     const data = req.body;
     const productID = await new CreateOneProductService().execute(data);
     return res.status(200).json({ productID });
@@ -34,8 +33,7 @@ export class ProductsController {
   };
 
   updateOne = async (req: Request, res: Response) => {
-    const payload: JwtPayload = (req as any).jwtPayload;
-    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
+    validateAccessLevel(2, req);
     const productID = req.params.productID;
     const data = req.body;
     await new UpdateProductService().execute({ productID, ...data });
@@ -43,8 +41,7 @@ export class ProductsController {
   };
 
   deleteOne = async (req: Request, res: Response) => {
-    const payload: JwtPayload = (req as any).jwtPayload;
-    if (Number(payload.userAccessLevel) < 2) res.status(403).json({ message: "Forbidden access." });
+    validateAccessLevel(2, req);
     const productID = req.params.productID;
     await new DeleteOneProductService().execute(productID);
     return res.status(200).json({ message: "Product successfully deleted." });
