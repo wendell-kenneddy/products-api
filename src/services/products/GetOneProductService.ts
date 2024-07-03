@@ -8,7 +8,6 @@ export class GetOneProductService {
   async execute(id: string) {
     await uuidSchema.validate(id);
     const client = await getClient();
-    const parser = new DataParser();
     let data: { product: ProductWithID; categories: CategoryWithID[] } | {} = {};
 
     // no catch block so it gets handled by the error handler middleware
@@ -26,8 +25,10 @@ export class GetOneProductService {
         `,
           [id]
         );
-        const productWithID = parser.parseNormalizedProduct(productQuery.rows[0]);
-        const categoriesWithID = categoriesQuery.rows.map((c) => parser.parseNormalizedCategory(c));
+        const productWithID = DataParser.parseNormalizedProduct(productQuery.rows[0]);
+        const categoriesWithID = categoriesQuery.rows.map((c) =>
+          DataParser.parseNormalizedCategory(c)
+        );
         data = { product: productWithID, categories: categoriesWithID };
       }
     } finally {

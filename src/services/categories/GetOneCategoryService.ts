@@ -9,6 +9,6 @@ export class GetOneCategoryService {
     const result = await query("SELECT * FROM categories WHERE category_id = $1", [id]);
 
     if (!result.rowCount) return null;
-    return new DataParser().parseNormalizedCategory(result.rows[0]);
+    return DataParser.parseNormalizedCategory(result.rows[0]);
   }
 }

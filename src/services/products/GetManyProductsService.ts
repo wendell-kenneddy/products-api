@@ -13,12 +13,11 @@ export class GetManyProductsService {
 
   private async getManyProducts(condition: string) {
     const result = await query(`SELECT * FROM products ${condition}`, []);
-    return result.rows.map((p) => new DataParser().parseNormalizedProduct(p));
+    return result.rows.map((p) => DataParser.parseNormalizedProduct(p));
   }
 
   private async getManyProductsByCategory(condition: string, categoryID: string) {
     uuidSchema.validate(categoryID);
-    const parser = new DataParser();
     const result = await query(
       `SELECT
          p.product_id,
@@ -33,6 +32,6 @@ export class GetManyProductsService {
        ${condition}`,
       [categoryID]
     );
-    return result.rows.map((p) => parser.parseNormalizedProduct(p));
+    return result.rows.map((p) => DataParser.parseNormalizedProduct(p));
   }
 }

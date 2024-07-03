@@ -11,7 +11,7 @@ export class GetOneUserService {
 
     if (result.rowCount) {
       const normalizedUser = result.rows[0] as NormalizedUser;
-      userWithID = new DataParser().parseNormalizedUser(normalizedUser);
+      userWithID = DataParser.parseNormalizedUser(normalizedUser);
     }
 
     return userWithID;

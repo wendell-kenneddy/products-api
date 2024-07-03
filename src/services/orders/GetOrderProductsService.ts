@@ -14,7 +14,6 @@ export class GetOrderProductsService {
         [customerID]
       );
       if (!order.rowCount) return null;
-      const parser = new DataParser();
       const fullOrderProducts = await client.query<NormalizedFullOrderProduct>(
         `SELECT
           p.product_id,
@@ -32,9 +31,9 @@ export class GetOrderProductsService {
       );
 
       return {
-        order: parser.parseNormalizedOrder(order.rows[0]),
+        order: DataParser.parseNormalizedOrder(order.rows[0]),
         orderProducts: fullOrderProducts.rows.map((op) =>
-          parser.parseNormalizedFullOrderProduct(op)
+          DataParser.parseNormalizedFullOrderProduct(op)
         ),
       };
     } finally {

@@ -13,6 +13,6 @@ export class ValidateLoginService {
     const isValidPassword = await compare(data.userPassword, dbUser.user_password);
     if (!isValidPassword) throw new Error("login fail");
 
-    return new DataParser().parseNormalizedUser(dbUser);
+    return DataParser.parseNormalizedUser(dbUser);
   }
 }
