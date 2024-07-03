@@ -8,7 +8,7 @@ import { JwtPayload } from "jsonwebtoken";
 export class OrdersController {
   createOrderProduct = async (req: Request, res: Response) => {
     const payload: JwtPayload = (req as any).jwtPayload;
-    const customerID = String(payload.sub);
+    const customerID = String(payload.userID);
     const productID = req.body.productID;
     await new CreateOrderProductService().execute(customerID, productID);
     res.status(200).json({
@@ -18,14 +18,14 @@ export class OrdersController {
 
   getOrderProducts = async (req: Request, res: Response) => {
     const payload: JwtPayload = (req as any).jwtPayload;
-    const customerID = String(payload.sub);
+    const customerID = String(payload.userID);
     const orderProducts = await new GetOrderProductsService().execute(customerID);
     res.status(200).json({ data: orderProducts });
   };
 
   deleteOrderProduct = async (req: Request, res: Response) => {
     const payload: JwtPayload = (req as any).jwtPayload;
-    const customerID = String(payload.sub);
+    const customerID = String(payload.userID);
     const orderProductID = req.body.orderProductID;
     await new DeleteOrderProductService().execute(customerID, orderProductID);
     res.status(200).json({ message: "Product successfully deleted from order." });
@@ -33,7 +33,7 @@ export class OrdersController {
 
   checkout = async (req: Request, res: Response) => {
     const payload: JwtPayload = (req as any).jwtPayload;
-    const customerID = String(payload.sub);
+    const customerID = String(payload.userID);
     await new OrderCheckoutService().execute(customerID);
     res.status(200).json({ message: "Order sucessfully completed." });
   };
