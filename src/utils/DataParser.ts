@@ -14,7 +14,7 @@ import {
 import { NormalizedUser, UserWithID } from "../services/users";
 
 export class DataParser {
-  parseNormalizedUser({
+  static parseNormalizedUser({
     user_id,
     user_name,
     user_password,
@@ -30,14 +30,17 @@ export class DataParser {
     };
   }
 
-  parseNormalizedCategory({ category_id, category_name }: NormalizedCategory): CategoryWithID {
+  static parseNormalizedCategory({
+    category_id,
+    category_name,
+  }: NormalizedCategory): CategoryWithID {
     return {
       categoryID: category_id,
       categoryName: category_name,
     };
   }
 
-  parseNormalizedProduct({
+  static parseNormalizedProduct({
     product_id,
     product_name,
     product_description,
@@ -55,7 +58,9 @@ export class DataParser {
     };
   }
 
-  parseNormalizedProductWithCategory(data: NormalizedProductWithCategory): ProductWithCategory {
+  static parseNormalizedProductWithCategory(
+    data: NormalizedProductWithCategory
+  ): ProductWithCategory {
     return {
       productID: data.product_id,
       productName: data.product_name,
@@ -68,11 +73,11 @@ export class DataParser {
     };
   }
 
-  parseNormalizedOrder({ order_id, customer_id }: NormalizedOrder): OrderWithID {
+  static parseNormalizedOrder({ order_id, customer_id }: NormalizedOrder): OrderWithID {
     return { orderID: order_id, customerID: customer_id };
   }
 
-  parseNormalizedFullOrderProduct({
+  static parseNormalizedFullOrderProduct({
     order_product_id,
     product_id,
     product_name,
