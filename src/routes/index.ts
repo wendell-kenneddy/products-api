@@ -5,19 +5,22 @@ import { ProductsController } from "../controllers/ProductsController";
 import { OrdersController } from "../controllers/OrdersController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { withoutAuthMiddleware } from "../middlewares/withoutAuthMiddleware";
+import { AuthController } from "../controllers/AuthController";
 
 const router = Router();
 const usersController = new UsersController();
 const categoriesController = new CategoriesController();
 const productsController = new ProductsController();
 const ordersController = new OrdersController();
+const authController = new AuthController();
 
 router.get("/users", authMiddleware, usersController.getMany);
 router.get("/users/profile", authMiddleware, usersController.getOne);
 router.post("/users", authMiddleware, usersController.create);
-router.post("/users/login", withoutAuthMiddleware, usersController.login);
-router.post("/users/signup", withoutAuthMiddleware, usersController.signup);
 router.delete("/users", authMiddleware, usersController.deleteOne);
+
+router.post("/auth/login", withoutAuthMiddleware, authController.login);
+router.post("/auth/signup", withoutAuthMiddleware, authController.signup);
 
 router.get("/categories", categoriesController.getMany);
 router.get("/categories/:categoryID", categoriesController.getOne);
