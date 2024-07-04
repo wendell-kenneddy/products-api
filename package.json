@@ -6,7 +6,9 @@
   "author": "Wendell Kenneddy",
   "keywords": [],
   "scripts": {
+    "build": "esbuild src/index.ts --target=es6 --outfile=dist/index.js --minify --bundle --platform=node --packages=external",
     "dev": "NODE_ENV=development dotenvx run -- nodemon",
+    "start": "NODE_ENV=production dotenvx run -- node dist/index.js",
     "start:db": "dotenvx run -- ts-node src/db/initDb.ts"
   },
   "description": "",
@@ -17,6 +19,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.8",
     "@types/pg": "^8.11.6",
+    "esbuild": "^0.23.0",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
