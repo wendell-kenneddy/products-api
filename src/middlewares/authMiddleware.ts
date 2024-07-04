@@ -1,14 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { JwtPayload, VerifyErrors, verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { JWTHandler } from "../utils/JWTHandler";
 import { getCookies } from "../utils/getCookies";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const accessToken = req.headers.authorization;
-
-  if (!accessToken) {
-    res.status(401).json({ message: "Unauthorized access." });
-  }
+  if (!accessToken) throw new Error("unauthenticated access");
 
   const token = String(accessToken).split(" ")[1];
   verify(token, String(process.env.TOKEN_SECRET), (err, payload) => {
@@ -16,7 +13,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
       if (err.message == "jwt expired") {
         const cookies = getCookies(req);
         const refreshToken = cookies.refreshToken;
-        if (!refreshToken) throw new Error("No Refresh Token provided.");
+        if (!refreshToken) throw new Error("invalid token");
 
         verify(refreshToken, String(process.env.REFRESH_TOKEN_SECRET), (e, p) => {
           const refreshTokenPayload = p as JwtPayload;
