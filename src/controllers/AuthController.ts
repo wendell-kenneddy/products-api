@@ -12,6 +12,7 @@ export class AuthController {
     res
       .header("Authorization", accessToken)
       .cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "strict" })
+      .status(200)
       .json({ message: "User successfully signed up." });
   };
 
@@ -22,6 +23,7 @@ export class AuthController {
     res
       .header("Authorization", accessToken)
       .cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "strict" })
+      .status(200)
       .json({ message: "Login successful." });
   };
 
