@@ -10,7 +10,7 @@ export class JWTHandler {
   static generateAccessToken(payload: TokenPayload): string {
     return sign(payload, String(process.env.TOKEN_SECRET), {
       subject: "user-token",
-      expiresIn: 60 * 15,
+      expiresIn: "1h",
     });
   }
 
