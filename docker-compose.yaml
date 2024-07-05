@@ -1,0 +1,27 @@
+name: products-api
+
+services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - 3000:5000
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - 8080:5432
+    env_file:
+      - db.env
+    restart: always
