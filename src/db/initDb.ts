@@ -77,20 +77,19 @@ async function main() {
 
     console.log("[database]: order_products table created");
 
-    if (args[2] == "with-superuser") {
-      const encryptedPassword = await hash("12345678", 10);
-      await client.query(
-        `WITH u_query AS (
-           INSERT INTO users 
-           (user_name, user_email, user_password, user_access_level)
-           VALUES ('Adam', 'adam@email.com', $1, 3) RETURNING user_id
-          )
-         INSERT INTO orders (customer_id)
-         VALUES ((SELECT user_id FROM u_query))
-        `,
-        [encryptedPassword]
-      );
-    }
+    console.log("[database]: adding superuser");
+    const encryptedPassword = await hash("12345678", 10);
+    await client.query(
+      `WITH u_query AS (
+         INSERT INTO users 
+         (user_name, user_email, user_password, user_access_level)
+         VALUES ('Adam', 'adam@email.com', $1, 3) RETURNING user_id
+        )
+       INSERT INTO orders (customer_id)
+       VALUES ((SELECT user_id FROM u_query))
+      `,
+      [encryptedPassword]
+    );
 
     await client.query("COMMIT");
     console.log("[database]: done");
