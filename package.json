@@ -1,15 +1,15 @@
 {
   "name": "products-api",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "license": "MIT",
   "author": "Wendell Kenneddy",
   "keywords": [],
   "scripts": {
     "build": "esbuild src/index.ts --target=es6 --outfile=dist/index.js --minify --bundle --platform=node --packages=external",
-    "dev": "NODE_ENV=development dotenvx run -- nodemon",
-    "start": "NODE_ENV=production dotenvx run -- node dist/index.js",
-    "start:db": "dotenvx run -- ts-node src/db/initDb.ts"
+    "dev": "NODE_ENV=development nodemon",
+    "start": "NODE_ENV=production node dist/index.js",
+    "start:db": "ts-node src/db/initDb.ts"
   },
   "description": "",
   "devDependencies": {
