@@ -16,4 +16,6 @@ export const ERROR_RESPONSES: ErrorResponses = {
     400,
     "User with provided email already exists.",
   ],
+  'insert or update on table "product_categories" violates foreign key constraint "product_categories_category_id_fkey"':
+    [400, "Invalid category ID(s) provided."],
 };
