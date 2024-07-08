@@ -7,7 +7,7 @@ export function errorHandlerMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  if (process.env.NODE_ENV == "development") console.log(err.message);
+  if (process.env.NODE_ENV == "development") console.log(err);
   const { status, message } = getErrorResponse(err);
 
   return res.status(status).json({ message });
